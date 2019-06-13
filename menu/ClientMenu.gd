@@ -26,7 +26,8 @@ func _ready():
 
 
 func _on_start_button_pressed():
-	SceneSwitcher.switch_scene("res://game/Game.tscn", {"ip": ip, "port": port})
+	Network.connect_to_server(ip, port, "player3")
+	get_tree().change_scene("res://game/Game.tscn")
 
 
 func _on_back_button_pressed():
