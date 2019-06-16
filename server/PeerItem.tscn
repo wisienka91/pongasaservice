@@ -1,0 +1,20 @@
+[gd_scene format=2]
+
+[node name="PeerItem" type="Panel"]
+margin_right = 400.0
+margin_bottom = 40.0
+
+[node name="IdLabel" type="Label" parent="."]
+margin_right = 92.0
+margin_bottom = 40.0
+
+[node name="IPLabel" type="Label" parent="."]
+margin_left = 92.0
+margin_top = 1.0
+margin_right = 242.0
+margin_bottom = 41.0
+
+[node name="PingLabel" type="Label" parent="."]
+margin_left = 292.0
+margin_right = 400.0
+margin_bottom = 40.0

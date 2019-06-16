@@ -16,8 +16,8 @@ func _ready():
 
 
 func _on_server_button_pressed():
-	#get_tree().change_scene("res://menu/ServerMenu.tscn")
-	SceneSwitcher.switch_scene("res://menu/ServerMenu.tscn", {"test": "test2"})
+	# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://menu/ServerMenu.tscn")
 
 
 func _on_client_button_pressed():
