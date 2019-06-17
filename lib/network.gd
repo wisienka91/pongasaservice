@@ -75,10 +75,11 @@ remote func _send_player_info(id, info):
 	if get_tree().is_network_server():
 		for peer_id in GameState.players:
 			rpc_id(id, '_send_player_info', peer_id, GameState.players[peer_id])
-	GameState.players[id] = info
-	var new_player = load("res://game/Player.tscn").instance()
-	new_player.name = str(id)
-	get_tree().get_root().add_child(new_player)
+		GameState.players[id] = info
+	else:
+		var new_player = load("res://game/Player.tscn").instance()
+		new_player.name = str(id)
+		get_tree().get_root().add_child(new_player)
 
 func update_position(id, position):
 	GameState.players[id].position = position
