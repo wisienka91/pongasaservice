@@ -27,6 +27,7 @@ func _ready():
 
 func _on_start_button_pressed():
 	Network.connect_to_server(ip, port, "player3")
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://game/Game.tscn")
 
 

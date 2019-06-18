@@ -5,7 +5,7 @@ var ip = "127.0.0.1"
 var port = "6007"
 var players = {}
 var self_data = {
-	name = '',
+	name = 'a',
 	position = Vector2(100, 100),
 	ip = IP.get_local_addresses()[1],
 	ping = 'fs'
@@ -71,15 +71,31 @@ func _on_connection_failed():
 	pass
 
 
+remote func move_player(id):
+	print("Trying to move...")
+
+
+remote func get_player_info(peer_id, info):
+	if get_tree().is_network_server():
+		print(peer_id, " ", GameState.players[peer_id])
+		rpc_id(peer_id, 'get_players_info', peer_id, GameState.players[peer_id])
+	else:
+		rpc_id(1, 'get_players_info', peer_id, null)
+		print("asd")
+		GameState.players[peer_id] = info
+
+
+
 remote func _send_player_info(id, info):
 	if get_tree().is_network_server():
 		for peer_id in GameState.players:
 			rpc_id(id, '_send_player_info', peer_id, GameState.players[peer_id])
-		GameState.players[id] = info
 	else:
 		var new_player = load("res://game/Player.tscn").instance()
 		new_player.name = str(id)
 		get_tree().get_root().add_child(new_player)
+	GameState.players[id] = info
+
 
 func update_position(id, position):
 	GameState.players[id].position = position
