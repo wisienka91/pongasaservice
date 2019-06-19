@@ -47,14 +47,15 @@ func connect_to_server(ip, port, player_name):
 
 
 func _on_server_disconnected():
-	print('Server ", ip, " disconnected...')
+	print("Server ", ip, " disconnected...")
 	#peer.close_connection()
 
 
 func _on_player_connected(id):
-	print("Player: ", id, " connected...")
-	#rpc_id(id, 'instance_remote_player', get_tree().get_network_unique_id(), get_tree().is_network_server())
-	pass
+	if get_tree().is_network_server():
+		print("Player: ", id, " connected...")
+	else:
+		pass
 
 
 func _on_player_disconnected(id):
@@ -70,12 +71,22 @@ func _on_connected_to_server():
 func _on_connection_failed():
 	pass
 
+func get_players_info(peer_id, info):
+	rpc_id(1, '_get_players_info', peer_id, null)
+
+remote func _get_players_info(peer_id, info):
+	if get_tree().is_network_server():
+		print(peer_id, " ", GameState.players[peer_id])
+		rpc_id(peer_id, '_get_players_info', peer_id, GameState.players[peer_id])
+	else:
+		print(peer_id, " ", GameState.players[peer_id], " ", info)
+		GameState.players[peer_id] = info
 
 remote func _send_player_info(id, info):
+	GameState.players[id] = info
 	if get_tree().is_network_server():
 		for peer_id in GameState.players:
 			rpc_id(id, '_send_player_info', peer_id, GameState.players[peer_id])
-		GameState.players[id] = info
 	else:
 		var new_player = load("res://game/Player.tscn").instance()
 		new_player.name = str(id)
