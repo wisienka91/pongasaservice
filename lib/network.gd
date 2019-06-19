@@ -65,7 +65,7 @@ func _on_player_disconnected(id):
 
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()
-	rpc('_send_player_info', get_tree().get_network_unique_id(), self_data)
+	rpc('_initiate_player_info', get_tree().get_network_unique_id(), self_data)
 
 
 func _on_connection_failed():
@@ -76,17 +76,15 @@ func get_players_info(peer_id, info):
 
 remote func _get_players_info(peer_id, info):
 	if get_tree().is_network_server():
-		print(peer_id, " ", GameState.players[peer_id])
-		rpc_id(peer_id, '_get_players_info', peer_id, GameState.players[peer_id])
+		rpc_id(peer_id, '_get_players_info', peer_id, GameState.players)
 	else:
-		print(peer_id, " ", GameState.players[peer_id], " ", info)
-		GameState.players[peer_id] = info
+		GameState.players = info
 
-remote func _send_player_info(id, info):
+remote func _initiate_player_info(id, info):
 	GameState.players[id] = info
 	if get_tree().is_network_server():
 		for peer_id in GameState.players:
-			rpc_id(id, '_send_player_info', peer_id, GameState.players[peer_id])
+			rpc_id(id, '_initiate_player_info', peer_id, GameState.players[peer_id])
 	else:
 		var new_player = load("res://game/Player.tscn").instance()
 		new_player.name = str(id)
