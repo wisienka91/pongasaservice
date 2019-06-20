@@ -1,7 +1,7 @@
 extends Node
 
 func _ready():
-	var new_player = preload("res://game/Player.tscn").instance()
+	var new_player = preload("res://game/Player.tscn")
 
-#remote func pre_configure_game():
-#    get_tree().set_pause(true)
+func _physics_process(delta):
+	pass

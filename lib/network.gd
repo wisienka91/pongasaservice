@@ -1,12 +1,15 @@
 extends Node
 
 
-var ip = "127.0.0.1"
+var ip = IP.get_local_addresses()[1]
 var port = "6007"
 var players = {}
 var self_data = {
 	name = '',
-	position = Vector2(100, 100),
+	position = {
+		x = 100,
+		y = 100
+	},
 	ip = IP.get_local_addresses()[1],
 	ping = 'fs'
 }
@@ -48,6 +51,7 @@ func connect_to_server(ip, port, player_name):
 
 func _on_server_disconnected():
 	print("Server ", ip, " disconnected...")
+	#get_tree().get_rpc_sender_id()
 	#peer.close_connection()
 
 
@@ -71,24 +75,53 @@ func _on_connected_to_server():
 func _on_connection_failed():
 	pass
 
+
+remote func _set_player_boundaries(peer_id, boundaries):
+	if get_tree().is_network_server():
+		GameState.boundaries = boundaries
+		GameState.boundaries.set = true
+		print(GameState.boundaries)
+	else:
+		rpc_id(1, '_set_player_boundaries', peer_id, boundaries)
+
+
+func set_player_info(peer_id, position):
+	rpc_unreliable_id(1, '_set_player_info', peer_id, position)
+
+
+remote func _set_player_info(peer_id, position):
+	if get_tree().is_network_server():
+		if GameState.boundaries.set:
+			if position.y < GameState.boundaries.y_up:
+				position.y = GameState.boundaries.y_up
+			elif position.y > GameState.boundaries.y_down:
+				position.y = GameState.boundaries.y_down
+		GameState.players[peer_id].position = position
+
+
 func get_players_info(peer_id, info):
-	rpc_id(1, '_get_players_info', peer_id, null)
+	rpc_unreliable_id(1, '_get_players_info', peer_id, null)
+
 
 remote func _get_players_info(peer_id, info):
 	if get_tree().is_network_server():
-		rpc_id(peer_id, '_get_players_info', peer_id, GameState.players)
+		rpc_unreliable_id(peer_id, '_get_players_info', peer_id, GameState.players)
 	else:
 		GameState.players = info
 
+
 remote func _initiate_player_info(id, info):
 	GameState.players[id] = info
+	var no_server_players = []
+	for key in GameState.players.keys():
+		if key != 1:
+			no_server_players.append(key)
+
 	if get_tree().is_network_server():
-		for peer_id in GameState.players:
+		for peer_id in no_server_players:
 			rpc_id(id, '_initiate_player_info', peer_id, GameState.players[peer_id])
 	else:
 		var new_player = load("res://game/Player.tscn").instance()
 		new_player.name = str(id)
-		get_tree().get_root().add_child(new_player)
-
-func update_position(id, position):
-	GameState.players[id].position = position
+		get_tree().get_root().get_node("Game").get_node("Players").add_child(new_player)
+		rpc_id(1, '_set_player_boundaries', id, new_player.boundaries)
