@@ -30,5 +30,3 @@ func _physics_process(delta):
 	elif Input.is_action_pressed("ui_down"):
 		new_position.y += speed * delta
 	Network.set_player_info(peer_id, new_position)
-	Network.get_players_info(peer_id, null)
-	position.y = GameState.players[peer_id].position.y

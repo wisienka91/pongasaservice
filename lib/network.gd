@@ -80,7 +80,6 @@ remote func _set_player_boundaries(peer_id, boundaries):
 	if get_tree().is_network_server():
 		GameState.boundaries = boundaries
 		GameState.boundaries.set = true
-		print(GameState.boundaries)
 	else:
 		rpc_id(1, '_set_player_boundaries', peer_id, boundaries)
 
@@ -121,7 +120,5 @@ remote func _initiate_player_info(id, info):
 		for peer_id in no_server_players:
 			rpc_id(id, '_initiate_player_info', peer_id, GameState.players[peer_id])
 	else:
-		var new_player = load("res://game/Player.tscn").instance()
-		new_player.name = str(id)
-		get_tree().get_root().get_node("Game").get_node("Players").add_child(new_player)
+		var new_player = get_tree().get_root().get_node("Game").init_player(id)
 		rpc_id(1, '_set_player_boundaries', id, new_player.boundaries)

@@ -20,7 +20,7 @@ func _ready():
 	var max_players = SceneSwitcher.get_param("max_players")
 	var max_points = SceneSwitcher.get_param("max_points")
 
-	var server_data = Network.start_server(port, max_players)
+	var server_data = Network.start_server(port, max_players + 1)
 	var key_data = {
 		"name": "PeerId",
 		"ip": "IP address",
