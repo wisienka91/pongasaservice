@@ -4,6 +4,7 @@ const PeerItem = preload("res://server/PeerItem.tscn")
 
 var listIndex = 0
 var playersVisible = []
+var server_data = null
 
 
 func addItem(node, child_data):
@@ -20,14 +21,14 @@ func _ready():
 	var max_players = SceneSwitcher.get_param("max_players")
 	var max_points = SceneSwitcher.get_param("max_points")
 
-	var server_data = Network.start_server(port, max_players + 1)
+	server_data = Network.start_server(port, max_players + 1)
 	var key_data = {
 		"name": "PeerId",
 		"ip": "IP address",
 		"ping": "PING"
 	}
 	addItem($Panel/PeersKey, key_data)
-	addItem($Panel/ScrollContainer/PeersList, server_data)
+	addItem($Panel/ScrollContainer/PeersList, GameState.server[1])
 
 func _add_players():
 	for key in GameState.players.keys():
@@ -37,7 +38,7 @@ func _add_players():
 func _remove_players():
 	var playersToRemove = []
 	for key in playersVisible:
-		if not GameState.players.keys().has(key):
+		if (not GameState.players.keys().has(key) and str(key) != "1"):
 			playersToRemove.append(key)
 	if len(playersToRemove) > 0:
 		var peersPlayers = {}
