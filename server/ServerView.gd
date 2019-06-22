@@ -2,7 +2,6 @@ extends Node2D
 
 const PeerItem = preload("res://server/PeerItem.tscn")
 
-var listIndex = 0
 var playersVisible = []
 var server_data = null
 

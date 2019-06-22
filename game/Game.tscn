@@ -44,4 +44,4 @@ shape = SubResource( 3 )
 [node name="Ball" parent="." instance=ExtResource( 2 )]
 position = Vector2( 512, 384 )
 
-[node name="Players" type="Node" parent="."]
+[node name="Players" type="Node2D" parent="."]

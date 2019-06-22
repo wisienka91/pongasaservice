@@ -1,6 +1,5 @@
 extends Node
 
-onready var playerScene = preload("res://game/Player.tscn")
 var players = []
 var peer_id = null
 var visible_players = []
@@ -35,12 +34,15 @@ func _physics_process(delta):
 		else:
 			pass
 
-	Network.get_players_info(peer_id, null)
-	players = get_tree().get_root().get_node("Game").get_node("Players").get_children()
-	for player in players:
-		player.position.y = GameState.players[player.peer_id].position.y
+		Network.get_players_info(peer_id, null)
+		players = get_tree().get_root().get_node("Game").get_node("Players").get_children()
+		for player in players:
+			var peer_data = GameState.players.get(player.peer_id)
+			if peer_data:
+				player.position.y = peer_data.position.y
 
 func init_player(peer_id):
+	var playerScene = load("res://game/Player.tscn")
 	var new_player = playerScene.instance()
 	get_tree().get_root().get_node("Game").get_node("Players").add_child(new_player)
 	visible_players.append(peer_id)
