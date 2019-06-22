@@ -17,14 +17,14 @@ func get_players_to_add():
 
 func add_players(players_to_add):
 	for player_id in players_to_add:
-		init_player(player_id)
+		init_player(player_id, false)
 
 func _physics_process(delta):
 	if peer_id == null:
 		peer_id = get_tree().get_network_unique_id()
 	else:
 		if len(visible_players) == 0:
-			var new_player = init_player(peer_id)
+			var new_player = init_player(peer_id, true)
 			Network.set_player_boundaries(peer_id, new_player.boundaries)
 		elif len(GameState.players.keys()) > len(visible_players):
 			var players_to_add = get_players_to_add()
@@ -41,9 +41,10 @@ func _physics_process(delta):
 			if peer_data:
 				player.position.y = peer_data.position.y
 
-func init_player(peer_id):
+func init_player(peer_id, is_operating):
 	var playerScene = load("res://game/Player.tscn")
 	var new_player = playerScene.instance()
 	get_tree().get_root().get_node("Game").get_node("Players").add_child(new_player)
 	visible_players.append(peer_id)
+	new_player.is_operating = is_operating
 	return new_player
