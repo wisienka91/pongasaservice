@@ -26,6 +26,10 @@ SceneSwitcher="*res://scripts/scene_switcher.gd"
 GameState="*res://server/game_state.gd"
 Network="*res://lib/network.gd"
 
+[debug]
+
+gdscript/warnings/enable=false
+
 [display]
 
 window/size/height=768

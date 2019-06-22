@@ -4,6 +4,7 @@ const PeerItem = preload("res://server/PeerItem.tscn")
 
 var playersVisible = []
 var server_data = null
+var max_players = 0
 
 
 func addItem(node, child_data):
@@ -12,12 +13,12 @@ func addItem(node, child_data):
 	item.get_node("IPLabel").text = child_data.ip
 	item.get_node("PingLabel").text = child_data.ping
 	node.add_child(item)
-	if str(child_data.name) != "PeerId":
+	if (str(child_data.name) != "PeerId" and str(child_data.name) != "1"):
 		playersVisible.append(child_data.name)
 
 func _ready():
 	var port = SceneSwitcher.get_param("port")
-	var max_players = SceneSwitcher.get_param("max_players")
+	max_players = SceneSwitcher.get_param("max_players")
 	var max_points = SceneSwitcher.get_param("max_points")
 
 	server_data = Network.start_server(port, max_players + 1)
@@ -59,3 +60,27 @@ func _process(delta):
 	_add_players()
 	_remove_players()
 	_update_ping()
+
+func _handle_collisions():
+	pass
+
+func collide_walls():
+	if GameState.boundaries.set:
+		if GameState.ball.ball_position.y + GameState.ball.ball_radius > GameState.boundaries.y_down:
+			GameState.ball.ball_speed.y = -1 * GameState.ball.ball_speed.y
+		if GameState.ball.ball_position.y - GameState.ball.ball_radius < GameState.boundaries.y_up:
+			GameState.ball.ball_speed.y = -1 * GameState.ball.ball_speed.y
+
+func collide_goals():
+	pass
+
+func collide_players():
+	pass
+
+func _physics_process(delta):
+	if len(playersVisible) == max_players:
+		#TO-DO: start counter to start game
+		GameState.ball.ball_position += GameState.ball.ball_speed * delta
+		collide_walls()
+		collide_goals()
+		collide_players()

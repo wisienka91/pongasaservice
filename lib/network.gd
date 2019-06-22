@@ -27,17 +27,14 @@ func _ready():
 
 
 func start_server(port, max_players):
-	self_data.name = '1'
+	self_data.name = "1"
+	self_data.ping = "-"
 	GameState.server[1] = self_data
 	var peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, max_players)
 	print("Starting server... Port: ", port, ". Errors: ", error)
 	get_tree().set_network_peer(peer)
-	return({
-		"name": str(get_tree().get_network_unique_id()),
-		"ip": ip,
-		"ping": "-"
-	})
+	return(self_data)
 
 
 func connect_to_server(ip, port, player_name):
@@ -76,7 +73,7 @@ func _on_connection_failed():
 	pass
 
 func set_player_boundaries(peer_id, boundaries):
-	rpc_id(1, '_set_player_boundaries', peer_id, boundaries)
+	rpc_unreliable_id(1, '_set_player_boundaries', peer_id, boundaries)
 
 remote func _set_player_boundaries(peer_id, boundaries):
 	if get_tree().is_network_server():
@@ -84,18 +81,25 @@ remote func _set_player_boundaries(peer_id, boundaries):
 			GameState.boundaries = boundaries
 			GameState.boundaries.set = true
 
+func get_ball_info(peer_id, info):
+	rpc_unreliable_id(1, '_get_ball_info', peer_id, info)
+
+remote func _get_ball_info(peer_id, info):
+	if get_tree().is_network_server():
+		rpc_unreliable_id(peer_id, '_get_ball_info', peer_id, GameState.ball)
+	else:
+		GameState.ball = info
 
 func set_player_info(peer_id, position):
 	rpc_unreliable_id(1, '_set_player_info', peer_id, position)
 
-
 remote func _set_player_info(peer_id, position):
 	if get_tree().is_network_server():
 		if GameState.boundaries.set:
-			if position.y < GameState.boundaries.y_up:
-				position.y = GameState.boundaries.y_up
-			elif position.y > GameState.boundaries.y_down:
-				position.y = GameState.boundaries.y_down
+			if position.y - GameState.boundaries.player_y_size < GameState.boundaries.y_up:
+				position.y = GameState.boundaries.y_up + GameState.boundaries.player_y_size
+			elif position.y + GameState.boundaries.player_y_size > GameState.boundaries.y_down:
+				position.y = GameState.boundaries.y_down - GameState.boundaries.player_y_size
 		GameState.players[peer_id].position = position
 
 

@@ -3,6 +3,7 @@ extends Node
 var players = []
 var peer_id = null
 var visible_players = []
+const playerScene = preload("res://game/Player.tscn")
 
 func _ready():
 	pass
@@ -20,6 +21,10 @@ func add_players(players_to_add):
 		init_player(player_id, false)
 
 func _physics_process(delta):
+	var ball = get_node("Ball")
+	Network.get_ball_info(peer_id, null)
+	ball.position = GameState.ball.ball_position
+
 	if peer_id == null:
 		peer_id = get_tree().get_network_unique_id()
 	else:
@@ -35,16 +40,16 @@ func _physics_process(delta):
 			pass
 
 		Network.get_players_info(peer_id, null)
-		players = get_tree().get_root().get_node("Game").get_node("Players").get_children()
+		players = $Players.get_children()
 		for player in players:
 			var peer_data = GameState.players.get(player.peer_id)
 			if peer_data:
 				player.position.y = peer_data.position.y
 
 func init_player(peer_id, is_operating):
-	var playerScene = load("res://game/Player.tscn")
 	var new_player = playerScene.instance()
-	get_tree().get_root().get_node("Game").get_node("Players").add_child(new_player)
-	visible_players.append(peer_id)
 	new_player.is_operating = is_operating
+	new_player.position = Vector2(0, 0)
+	$Players.add_child(new_player)
+	visible_players.append(peer_id)
 	return new_player

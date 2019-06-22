@@ -16,8 +16,12 @@ func _ready():
 	position.x += get_transform().get_scale().x * size.x
 	position.y += get_transform().get_scale().y * size.y
 	boundaries = {
-		y_up = position.y,
-		y_down = get_viewport().size.y - 2 * size.y
+		y_up = 0,
+		y_down = get_viewport().size.y,
+		x_left = 0,
+		x_right = get_viewport().size.x,
+		player_x_size = position.x,
+		player_y_size = position.y
 	}
 	is_left = false
 
