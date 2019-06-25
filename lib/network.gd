@@ -11,7 +11,8 @@ var self_data = {
 		y = 100
 	},
 	ip = IP.get_local_addresses()[1],
-	ping = 'fs'
+	ping = 'fs',
+	peer_id = null
 }
 
 
@@ -28,6 +29,7 @@ func _ready():
 
 func start_server(port, max_players):
 	self_data.name = "1"
+	self_data.peer_id = 1
 	self_data.ping = "-"
 	GameState.server[1] = self_data
 	var peer = NetworkedMultiplayerENet.new()
@@ -66,6 +68,7 @@ func _on_player_disconnected(id):
 
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()
+	self_data.peer_id = int(get_tree().get_network_unique_id())
 	rpc_id(1, '_initiate_player_info', get_tree().get_network_unique_id(), self_data)
 
 

@@ -14,8 +14,8 @@ var boundaries = {
 	set = false,
 	x_up = null,
 	x_down = null,
-	player_x_size = null,
-	player_y_size = null
+	player_x_size = 7,
+	player_y_size = 33
 }
 
 
