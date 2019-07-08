@@ -8,7 +8,7 @@ var is_left = true
 var is_operating = false
 
 func _ready():
-	peer_id = get_tree().get_network_unique_id()
+	#peer_id = get_tree().get_network_unique_id()
 	size = {
 		x = get_node("CollisionShape2D").get_shape().get_extents()[0],
 		y = get_node("CollisionShape2D").get_shape().get_extents()[1]

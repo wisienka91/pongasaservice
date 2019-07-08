@@ -22,9 +22,9 @@ func add_players(players_to_add):
 		init_player(player_id, false)
 
 func _physics_process(delta):
-	if peer_id == null:
-		peer_id = get_tree().get_network_unique_id()
-	else:
+	#if peer_id == null and :
+	#	peer_id = get_tree().get_network_unique_id()
+	if peer_id != null:
 		var ball = get_node("Ball")
 		Network.get_ball_info(peer_id, null)
 		ball.position = GameState.ball.ball_position
@@ -58,13 +58,15 @@ func init_player(player_id, is_operating):
 	var new_player = playerScene.instance()
 	new_player.is_operating = is_operating
 	if is_operating:
+		new_player.peer_id = get_tree().get_network_unique_id()
 		new_player.position = Vector2(
 			GameState.boundaries.player_x_size,
 			GameState.boundaries.player_y_size
 		)
 		print("Is operating")
 	else:
-		new_player.player_id = player_id
+		#new_player.player_id = player_id
+		new_player.peer_id = player_id
 		new_player.position = Vector2(
 		1000 + GameState.boundaries.player_x_size,
 		GameState.boundaries.player_y_size
