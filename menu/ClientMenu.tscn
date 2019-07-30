@@ -28,22 +28,29 @@ custom_constants/separation = 101
 alignment = 1
 
 [node name="IPMarginContainer" type="MarginContainer" parent="ClientInputContainer"]
-margin_left = 147.0
 margin_right = 205.0
 margin_bottom = 40.0
+size_flags_horizontal = 3
 
 [node name="IPInput" type="LineEdit" parent="ClientInputContainer/IPMarginContainer"]
-margin_right = 58.0
+margin_right = 205.0
 margin_bottom = 40.0
+text = "10.130.45.184"
+align = 1
 
 [node name="PortMarginContainer" type="MarginContainer" parent="ClientInputContainer"]
 margin_left = 306.0
-margin_right = 364.0
+margin_right = 512.0
 margin_bottom = 40.0
+size_flags_horizontal = 3
 
-[node name="PortInput" type="LineEdit" parent="ClientInputContainer/PortMarginContainer"]
-margin_right = 58.0
+[node name="PortInput" type="SpinBox" parent="ClientInputContainer/PortMarginContainer"]
+margin_right = 206.0
 margin_bottom = 40.0
+min_value = 6007.0
+max_value = 6010.0
+value = 6007.0
+align = 1
 
 [node name="ClientInputLabelsContainer" type="HBoxContainer" parent="."]
 margin_left = 256.0
@@ -54,13 +61,13 @@ custom_constants/separation = 101
 alignment = 1
 
 [node name="IPMarginContainer" type="MarginContainer" parent="ClientInputLabelsContainer"]
-margin_left = 152.0
-margin_right = 219.0
+margin_right = 205.0
 margin_bottom = 40.0
+size_flags_horizontal = 3
 
 [node name="IPLabel" type="Label" parent="ClientInputLabelsContainer/IPMarginContainer"]
 margin_top = 4.0
-margin_right = 67.0
+margin_right = 205.0
 margin_bottom = 35.0
 text = "Server
 IP address"
@@ -68,13 +75,14 @@ align = 1
 valign = 1
 
 [node name="PortMarginContainer" type="MarginContainer" parent="ClientInputLabelsContainer"]
-margin_left = 320.0
-margin_right = 360.0
+margin_left = 306.0
+margin_right = 512.0
 margin_bottom = 40.0
+size_flags_horizontal = 3
 
 [node name="PortLabel" type="Label" parent="ClientInputLabelsContainer/PortMarginContainer"]
 margin_top = 4.0
-margin_right = 40.0
+margin_right = 206.0
 margin_bottom = 35.0
 text = "Server
 port"

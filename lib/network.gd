@@ -90,13 +90,14 @@ func set_player_info(peer_id, position):
 
 
 remote func _set_player_info(peer_id, position):
-	if get_tree().is_network_server():
-		if GameState.boundaries.set:
-			if position.y < GameState.boundaries.y_up:
-				position.y = GameState.boundaries.y_up
-			elif position.y > GameState.boundaries.y_down:
-				position.y = GameState.boundaries.y_down
-		GameState.players[peer_id].position = position
+	if peer_id in GameState.players.keys():
+		if get_tree().is_network_server():
+			if GameState.boundaries.set:
+				if position.y < GameState.boundaries.y_up:
+					position.y = GameState.boundaries.y_up
+				elif position.y > GameState.boundaries.y_down:
+					position.y = GameState.boundaries.y_down
+			GameState.players[peer_id].position = position
 
 
 func get_players_info(peer_id, info):

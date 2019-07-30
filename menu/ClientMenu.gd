@@ -1,7 +1,7 @@
 extends Node2D
 
-var ip = null
-var port = null
+var ip = ""
+var port = 6007
 
 func _ready():
 	# warning-ignore:return_value_discarded
@@ -22,7 +22,7 @@ func _ready():
 
 	# warning-ignore:return_value_discarded
 	get_node("ClientInputContainer/PortMarginContainer/PortInput").connect(
-	"text_changed", self, "_on_port_input_changed")
+	"value_changed", self, "_on_port_input_changed")
 
 
 func _on_start_button_pressed():
