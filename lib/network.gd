@@ -28,13 +28,13 @@ func _ready():
 
 func start_server(port, max_players):
 	self_data.name = '1'
-	GameState.players[1] = self_data
+	GameState.server[1] = self_data
 	var peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, max_players)
 	print("Starting server... Port: ", port, ". Errors: ", error)
 	get_tree().set_network_peer(peer)
 	return({
-		"name": get_tree().get_network_unique_id(),
+		"name": str(get_tree().get_network_unique_id()),
 		"ip": ip,
 		"ping": "-"
 	})
@@ -69,19 +69,20 @@ func _on_player_disconnected(id):
 
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()
-	rpc('_initiate_player_info', get_tree().get_network_unique_id(), self_data)
+	rpc_id(1, '_initiate_player_info', get_tree().get_network_unique_id(), self_data)
 
 
 func _on_connection_failed():
 	pass
 
+func set_player_boundaries(peer_id, boundaries):
+	rpc_id(1, '_set_player_boundaries', peer_id, boundaries)
 
 remote func _set_player_boundaries(peer_id, boundaries):
 	if get_tree().is_network_server():
-		GameState.boundaries = boundaries
-		GameState.boundaries.set = true
-	else:
-		rpc_id(1, '_set_player_boundaries', peer_id, boundaries)
+		if not GameState.boundaries.set:
+			GameState.boundaries = boundaries
+			GameState.boundaries.set = true
 
 
 func set_player_info(peer_id, position):
@@ -89,13 +90,14 @@ func set_player_info(peer_id, position):
 
 
 remote func _set_player_info(peer_id, position):
-	if get_tree().is_network_server():
-		if GameState.boundaries.set:
-			if position.y < GameState.boundaries.y_up:
-				position.y = GameState.boundaries.y_up
-			elif position.y > GameState.boundaries.y_down:
-				position.y = GameState.boundaries.y_down
-		GameState.players[peer_id].position = position
+	if peer_id in GameState.players.keys():
+		if get_tree().is_network_server():
+			if GameState.boundaries.set:
+				if position.y < GameState.boundaries.y_up:
+					position.y = GameState.boundaries.y_up
+				elif position.y > GameState.boundaries.y_down:
+					position.y = GameState.boundaries.y_down
+			GameState.players[peer_id].position = position
 
 
 func get_players_info(peer_id, info):
@@ -111,14 +113,7 @@ remote func _get_players_info(peer_id, info):
 
 remote func _initiate_player_info(id, info):
 	GameState.players[id] = info
-	var no_server_players = []
-	for key in GameState.players.keys():
-		if key != 1:
-			no_server_players.append(key)
 
 	if get_tree().is_network_server():
-		for peer_id in no_server_players:
-			rpc_id(id, '_initiate_player_info', peer_id, GameState.players[peer_id])
-	else:
-		var new_player = get_tree().get_root().get_node("Game").init_player(id)
-		rpc_id(1, '_set_player_boundaries', id, new_player.boundaries)
+		for peer_id in GameState.players.keys():
+			rpc_id(peer_id, '_initiate_player_info', peer_id, GameState.players[peer_id])
