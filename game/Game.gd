@@ -4,7 +4,6 @@ onready var playerScene = preload("res://game/Player.tscn")
 var players = []
 var peer_id = null
 var visible_players = []
-onready var debug = $GUI/debug
 
 var controlling = null
 
@@ -44,7 +43,6 @@ func _physics_process(delta):
 
 
 func init_player(player_id):
-	debug.text += 'creating new player ' + str(player_id) + '\n'
 	var new_player = playerScene.instance()
 	new_player.name = str(player_id)
 	if player_id == peer_id:

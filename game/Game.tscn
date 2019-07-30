@@ -45,16 +45,3 @@ shape = SubResource( 3 )
 position = Vector2( 512, 384 )
 
 [node name="Players" type="Node" parent="."]
-
-[node name="GUI" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="GUI"]
-modulate = Color( 1, 1, 1, 0.129412 )
-margin_right = 200.0
-margin_bottom = 600.0
-
-[node name="debug" type="Label" parent="GUI"]
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 41.0
-margin_bottom = 15.0

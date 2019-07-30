@@ -35,7 +35,6 @@ size_flags_horizontal = 3
 [node name="IPInput" type="LineEdit" parent="ClientInputContainer/IPMarginContainer"]
 margin_right = 205.0
 margin_bottom = 40.0
-text = "10.130.45.184"
 align = 1
 
 [node name="PortMarginContainer" type="MarginContainer" parent="ClientInputContainer"]
@@ -48,7 +47,7 @@ size_flags_horizontal = 3
 margin_right = 206.0
 margin_bottom = 40.0
 min_value = 6007.0
-max_value = 6010.0
+max_value = 6027.0
 value = 6007.0
 align = 1
 
