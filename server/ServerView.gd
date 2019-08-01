@@ -52,11 +52,12 @@ func _remove_players():
 			$Panel/ScrollContainer/PeersList.remove_child(peer)
 			peer.queue_free()
 
-func _update_ping():
-	#TO-DO
-	pass
+#func _update_ping():
+	# TO-DO:
+	# - update ping
+#	pass
 
 func _process(delta):
 	_add_players()
 	_remove_players()
-	_update_ping()
+	#_update_ping()

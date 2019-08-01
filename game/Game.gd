@@ -4,20 +4,17 @@ onready var playerScene = preload("res://game/Player.tscn")
 var players = []
 var peer_id = null
 var visible_players = []
-
 var controlling = null
 
 func _ready():
 	peer_id = get_tree().get_network_unique_id()
-	var new_player = init_player(peer_id)
-	controlling = new_player
+	controlling = init_player(peer_id)
 
 func get_players_to_add():
 	var players_to_add = []
 	for player_id in GameState.players.keys():
 		if not visible_players.has(player_id):
 			players_to_add.append(player_id)
-	print("Players to add: ", players_to_add )
 	return players_to_add
 
 func add_players(players_to_add):
@@ -26,27 +23,38 @@ func add_players(players_to_add):
 
 func _physics_process(delta):
 	Network.get_players_info(peer_id, null)
+	if !GameState.boundaries_set:
+		Network.set_player_boundaries(peer_id, controlling.boundaries)
+		Network.get_boundaries_info(peer_id, null)
 
+	_display_players()
+
+	# send info only if position changes
+	if controlling.position != controlling.new_position:
+		Network.set_player_info(peer_id, controlling.new_position)
+	for player in GameState.players:
+		$Players.get_node(str(player)).position.y = GameState.players[player].position.y
+	controlling.new_position = controlling.position
+
+func _display_players():
+	print(GameState.players)
 	if len(GameState.players.keys()) > len(visible_players):
 		var players_to_add = get_players_to_add()
 		add_players(players_to_add)
 	elif len(GameState.players.keys()) < len(players):
+		# TO-DO:
+		# - remove disconnected players
+		# - stop the ball if there is just one or no players
 		pass
 	else:
 		pass
-
-	Network.set_player_info(peer_id, controlling.new_position)
-
-	players = $Players.get_children()
-	for player in GameState.players:
-		$Players.get_node(str(player)).position.y = GameState.players[player].position.y
-
 
 func init_player(player_id):
 	var new_player = playerScene.instance()
 	new_player.name = str(player_id)
 	if player_id == peer_id:
 		new_player.is_operating = true
+		new_player.z_index = 10
 
 	$Players.add_child(new_player)
 	visible_players.append(player_id)

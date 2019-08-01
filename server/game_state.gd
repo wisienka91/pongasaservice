@@ -6,9 +6,9 @@ var players = {}
 var server = {}
 var boundaries = {
 	y_up = null,
-	y_down = null,
-	set = false
+	y_down = null
 }
+var boundaries_set = false
 
 
 func _ready():
