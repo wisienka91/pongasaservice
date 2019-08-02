@@ -57,7 +57,14 @@ func _remove_players():
 	# - update ping
 #	pass
 
-func _process(delta):
+func _update_ball(delta):
+	GameState.ball.ball_position += GameState.ball.ball_speed * delta
+
+func _physics_process(delta):
 	_add_players()
 	_remove_players()
+
+	# TO-DO:
+	# start updating ball wen players number is at least 2
+	_update_ball(delta)
 	#_update_ping()

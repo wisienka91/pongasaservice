@@ -24,17 +24,15 @@ func add_players(players_to_add):
 func _physics_process(delta):
 	Network.get_players_info(peer_id, null)
 	if !GameState.boundaries_set:
-		Network.set_player_boundaries(peer_id, controlling.boundaries)
-		Network.get_boundaries_info(peer_id, null)
+		_set_boundaries()
 
 	_display_players()
+	_update_players()
+	_update_ball()
 
-	# send info only if position changes
-	if controlling.position != controlling.new_position:
-		Network.set_player_info(peer_id, controlling.new_position)
-	for player in GameState.players:
-		$Players.get_node(str(player)).position.y = GameState.players[player].position.y
-	controlling.new_position = controlling.position
+func _set_boundaries():
+	Network.set_player_boundaries(peer_id, controlling.boundaries)
+	Network.get_boundaries_info(peer_id, null)
 
 func _display_players():
 	print(GameState.players)
@@ -48,6 +46,17 @@ func _display_players():
 		pass
 	else:
 		pass
+
+func _update_players():
+	if controlling.position != controlling.new_position:
+		Network.set_player_info(peer_id, controlling.new_position)
+	for player in GameState.players:
+		$Players.get_node(str(player)).position.y = GameState.players[player].position.y
+	controlling.new_position = controlling.position
+
+func _update_ball():
+	Network.get_ball_info(peer_id, null)
+	$Ball.position = GameState.ball.ball_position
 
 func init_player(player_id):
 	var new_player = playerScene.instance()

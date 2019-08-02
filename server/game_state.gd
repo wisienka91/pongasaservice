@@ -1,7 +1,10 @@
 extends Node
 
-
-var ball_position = Vector2(512, 384)
+var ball = {
+	ball_position = Vector2(512, 384),
+	ball_speed = Vector2(20, 20),
+	ball_direction = Vector2(0, 0)
+}
 var players = {}
 var server = {}
 var boundaries = {
