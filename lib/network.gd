@@ -75,13 +75,13 @@ func _on_connected_to_server():
 func _on_connection_failed():
 	pass
 
-func set_player_boundaries(peer_id, boundaries):
-	rpc_id(1, '_set_player_boundaries', peer_id, boundaries)
+func set_player_boundaries(peer_id, player_boundaries):
+	rpc_id(1, '_set_player_boundaries', peer_id, player_boundaries)
 
-remote func _set_player_boundaries(peer_id, boundaries):
+remote func _set_player_boundaries(peer_id, player_boundaries):
 	if get_tree().is_network_server():
-		GameState.boundaries = boundaries
-		GameState.boundaries_set = true
+		GameState.player_boundaries = player_boundaries
+		GameState.player_boundaries_set = true
 
 
 func set_player_info(peer_id, position):
@@ -91,23 +91,23 @@ func set_player_info(peer_id, position):
 remote func _set_player_info(peer_id, position):
 	if peer_id in GameState.players.keys():
 		if get_tree().is_network_server():
-			if GameState.boundaries_set:
-				if position.y < GameState.boundaries.y_up:
-					position.y = GameState.boundaries.y_up
-				elif position.y > GameState.boundaries.y_down:
-					position.y = GameState.boundaries.y_down
+			if GameState.player_boundaries_set:
+				if position.y < GameState.player_boundaries.y_up:
+					position.y = GameState.player_boundaries.y_up
+				elif position.y > GameState.player_boundaries.y_down:
+					position.y = GameState.player_boundaries.y_down
 				GameState.players[peer_id].position = position
 
 
-func get_boundaries_info(peer_id, info):
-	rpc_id(1, '_get_boundaries_info', peer_id, null)
+func get_player_boundaries_info(peer_id, info):
+	rpc_id(1, '_get_player_boundaries_info', peer_id, null)
 
 
-remote func _get_boundaries_info(peer_id, info):
+remote func _get_player_boundaries_info(peer_id, info):
 	if get_tree().is_network_server():
-		rpc_id(peer_id, '_get_boundaries_info', peer_id, GameState.boundaries_set)
+		rpc_id(peer_id, '_get_player_boundaries_info', peer_id, GameState.player_boundaries_set)
 	else:
-		GameState.boundaries_set = info
+		GameState.player_boundaries_set = info
 
 func get_ball_info(peer_id, info):
 	rpc_unreliable_id(1, '_get_ball_info', peer_id, null)
@@ -118,6 +118,23 @@ remote func _get_ball_info(peer_id, info):
 		rpc_unreliable_id(peer_id, '_get_ball_info', peer_id, GameState.ball)
 	else:
 		GameState.ball = info
+
+func set_ball_boundaries(peer_id, ball_boundaries):
+	rpc_id(1, '_set_ball_boundaries', peer_id, ball_boundaries)
+
+remote func _set_ball_boundaries(peer_id, ball_boundaries):
+	if get_tree().is_network_server():
+		GameState.ball_boundaries = ball_boundaries
+		GameState.ball_boundaries_set = true
+
+func get_ball_boundaries_info(peer_id, info):
+	rpc_id(1, '_get_player_boundaries_info', peer_id, null)
+
+remote func _get_ball_boundaries_info(peer_id, info):
+	if get_tree().is_network_server():
+		rpc_id(peer_id, '_get_player_boundaries_info', peer_id, GameState.ball_boundaries_set)
+	else:
+		GameState.ball_boundaries_set = info
 
 func get_players_info(peer_id, info):
 	rpc_unreliable_id(1, '_get_players_info', peer_id, null)

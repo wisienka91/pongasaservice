@@ -3,7 +3,7 @@ extends KinematicBody2D
 const OPERATING_COLOR = Color(0, 0.75, 1)
 var speed = 333
 var size = null
-var boundaries = null
+var player_boundaries = null
 var is_left = true
 var is_operating = false
 var new_position = Vector2.ZERO
@@ -17,7 +17,7 @@ func _ready():
 	}
 	position.x += get_transform().get_scale().x * size.x
 	position.y += get_transform().get_scale().y * size.y
-	boundaries = {
+	player_boundaries = {
 		y_up = position.y,
 		y_down = get_viewport().size.y - 2 * size.y
 	}

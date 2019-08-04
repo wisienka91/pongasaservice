@@ -23,26 +23,40 @@ func add_players(players_to_add):
 
 func _physics_process(delta):
 	Network.get_players_info(peer_id, null)
-	if !GameState.boundaries_set:
-		_set_boundaries()
+	if !GameState.player_boundaries_set:
+		_set_player_boundaries()
+	if !GameState.ball_boundaries_set:
+		_set_ball_boundaries()
 
 	_display_players()
 	_update_players()
 	_update_ball()
 
-func _set_boundaries():
-	Network.set_player_boundaries(peer_id, controlling.boundaries)
-	Network.get_boundaries_info(peer_id, null)
+func _set_player_boundaries():
+	Network.set_player_boundaries(peer_id, controlling.player_boundaries)
+	Network.get_player_boundaries_info(peer_id, null)
+
+func _set_ball_boundaries():
+	var ball = get_node("Ball")
+	var ball_scale = ball.get_transform().get_scale().x
+	var ball_boundaries = {
+		x_left = 0,
+		x_right = get_viewport().size.x,
+		y_up = 0,
+		y_down = get_viewport().size.y,
+		radius = ball_scale * ball.get_node("CollisionShape").get_shape().radius
+	}
+
+	Network.set_ball_boundaries(peer_id, ball_boundaries)
+	Network.get_ball_boundaries_info(peer_id, null)
 
 func _display_players():
-	print(GameState.players)
 	if len(GameState.players.keys()) > len(visible_players):
 		var players_to_add = get_players_to_add()
 		add_players(players_to_add)
 	elif len(GameState.players.keys()) < len(players):
 		# TO-DO:
 		# - remove disconnected players
-		# - stop the ball if there is just one or no players
 		pass
 	else:
 		pass

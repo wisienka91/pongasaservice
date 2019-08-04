@@ -2,10 +2,12 @@ extends Node2D
 
 const PeerItem = preload("res://server/PeerItem.tscn")
 
+# 2 for tests. to be 3
+const MinPlayers = 2
+
 var listIndex = 0
 var playersVisible = []
 var server_data = null
-
 
 func addItem(node, child_data):
 	var item = PeerItem.instance()
@@ -57,14 +59,14 @@ func _remove_players():
 	# - update ping
 #	pass
 
-func _update_ball(delta):
-	GameState.ball.ball_position += GameState.ball.ball_speed * delta
-
 func _physics_process(delta):
 	_add_players()
 	_remove_players()
 
-	# TO-DO:
-	# start updating ball wen players number is at least 2
-	_update_ball(delta)
+	if len(playersVisible) >= MinPlayers:
+		GameState.started = true
+	else:
+		GameState.started = false
+		# TO-DO:
+		# splash: waiting for minimum players number
 	#_update_ping()
