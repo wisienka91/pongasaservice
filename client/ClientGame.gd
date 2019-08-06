@@ -1,6 +1,6 @@
 extends Node
 
-onready var playerScene = preload("res://game/Player.tscn")
+onready var playerScene = preload("res://client/Player.tscn")
 var players = []
 var peer_id = null
 var visible_players = []
