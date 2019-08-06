@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const OPERATING_COLOR = Color(0, 0.75, 1)
 var speed = 333
-var size = null
+var player_size = null
 var player_boundaries = null
 var is_left = true
 var is_operating = false
@@ -10,17 +10,20 @@ var new_position = Vector2.ZERO
 var operating_color_set = false
 
 func _ready():
-
-	size = {
+	player_size = {
 		x = get_node("CollisionShape2D").get_shape().get_extents()[0],
 		y = get_node("CollisionShape2D").get_shape().get_extents()[1]
 	}
-	position.x += get_transform().get_scale().x * size.x
-	position.y += get_transform().get_scale().y * size.y
+	position.x += get_transform().get_scale().x * player_size.x
+	position.y += get_transform().get_scale().y * player_size.y
 	player_boundaries = {
 		y_up = position.y,
-		y_down = get_viewport().size.y - 2 * size.y
+		y_down = get_viewport().size.y - 2 * player_size.y,
+		size = Vector2(get_transform().get_scale().x * player_size.x, get_transform().get_scale().y * player_size.y),
+		left_player = get_transform().get_scale().x * player_size.x,
+		right_player = get_viewport().size.x
 	}
+	print(player_boundaries)
 	is_left = false
 	new_position = position
 
