@@ -2,10 +2,12 @@ extends Node2D
 
 const PeerItem = preload("res://server/PeerItem.tscn")
 
+# 2 for tests. to be 3
+const MinPlayers = 2
+
 var listIndex = 0
 var playersVisible = []
 var server_data = null
-
 
 func addItem(node, child_data):
 	var item = PeerItem.instance()
@@ -52,11 +54,19 @@ func _remove_players():
 			$Panel/ScrollContainer/PeersList.remove_child(peer)
 			peer.queue_free()
 
-func _update_ping():
-	#TO-DO
-	pass
+#func _update_ping():
+	# TO-DO:
+	# - update ping
+#	pass
 
-func _process(delta):
+func _physics_process(delta):
 	_add_players()
 	_remove_players()
-	_update_ping()
+
+	if len(playersVisible) >= MinPlayers:
+		GameState.started = true
+	else:
+		GameState.started = false
+		# TO-DO:
+		# splash: waiting for minimum players number
+	#_update_ping()

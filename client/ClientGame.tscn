@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://game/Game.gd" type="Script" id=1]
-[ext_resource path="res://game/Ball.tscn" type="PackedScene" id=2]
+[ext_resource path="res://client/ClientGame.gd" type="Script" id=1]
+[ext_resource path="res://client/Ball.tscn" type="PackedScene" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 512, 10 )
@@ -12,7 +12,7 @@ extents = Vector2( 512, 10 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 10, 384 )
 
-[node name="Game" type="Node"]
+[node name="ClientGame" type="Node"]
 script = ExtResource( 1 )
 
 [node name="Borders" type="Node" parent="."]
