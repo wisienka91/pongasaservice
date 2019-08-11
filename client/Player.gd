@@ -23,8 +23,11 @@ func _ready():
 		left_player = get_transform().get_scale().x * player_size.x,
 		right_player = get_viewport().size.x
 	}
-	print(player_boundaries)
+
 	is_left = false
+
+	if !is_left:
+		position.x = player_boundaries.right_player - player_boundaries.size[0]
 	new_position = position
 
 func _physics_process(delta):

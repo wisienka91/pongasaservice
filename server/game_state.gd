@@ -4,7 +4,7 @@ var started = false
 
 var ball = {
 	ball_position = Vector2(512, 384),
-	ball_speed = Vector2(-25, 20),
+	ball_speed = Vector2(40, 15),
 	ball_direction = Vector2(0, 0)
 }
 
@@ -29,3 +29,5 @@ var ball_boundaries = {
 }
 
 var ball_boundaries_set = false
+
+var is_next_player_left = true

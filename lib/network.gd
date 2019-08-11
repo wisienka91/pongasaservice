@@ -4,15 +4,7 @@ extends Node
 var ip = IP.get_local_addresses()[1]
 var port = "6007"
 var players = {}
-var self_data = {
-	name = '',
-	position = {
-		x = 100,
-		y = 100
-	},
-	ip = IP.get_local_addresses()[1],
-	ping = 'fs'
-}
+var self_data = {}
 
 
 func _ready():
@@ -24,6 +16,17 @@ func _ready():
 	get_tree().connect("network_peer_connected", self, "_on_player_connected")
 	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
+
+	self_data = {
+		name = '',
+		position = {
+			x = 100,
+			y = get_viewport().size.y / 2
+		},
+		ip = IP.get_local_addresses()[1],
+		ping = 'fs',
+		is_left = GameState.is_next_player_left
+	}
 
 
 func start_server(port, max_players):
@@ -70,6 +73,7 @@ func _on_player_disconnected(id):
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()
 	rpc_id(1, '_initiate_player_info', get_tree().get_network_unique_id(), self_data)
+	GameState.is_next_player_left = !GameState.is_next_player_left
 
 
 func _on_connection_failed():
