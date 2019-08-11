@@ -4,7 +4,7 @@ var started = false
 
 var ball = {
 	ball_position = Vector2(512, 384),
-	ball_speed = Vector2(40, 15),
+	ball_speed = Vector2(50, 15),
 	ball_direction = Vector2(0, 0)
 }
 

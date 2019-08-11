@@ -8,7 +8,8 @@ var controlling = null
 
 func _ready():
 	peer_id = get_tree().get_network_unique_id()
-	controlling = init_player(peer_id)
+	Network.get_players_info(peer_id, null)
+	Network.get_side_info(peer_id, null)
 
 func get_players_to_add():
 	var players_to_add = []
@@ -23,7 +24,7 @@ func add_players(players_to_add):
 
 func _physics_process(delta):
 	Network.get_players_info(peer_id, null)
-	if !GameState.player_boundaries_set:
+	if !GameState.player_boundaries_set and controlling:
 		_set_player_boundaries()
 	if !GameState.ball_boundaries_set:
 		_set_ball_boundaries()
@@ -62,11 +63,14 @@ func _display_players():
 		pass
 
 func _update_players():
-	if controlling.position != controlling.new_position:
-		Network.set_player_info(peer_id, controlling.new_position)
+	if controlling:
+		if controlling.position != controlling.new_position:
+			Network.set_player_info(peer_id, controlling.new_position)
+
 	for player in GameState.players:
 		$Players.get_node(str(player)).position.y = GameState.players[player].position.y
-	controlling.new_position = controlling.position
+	if controlling:
+		controlling.new_position = controlling.position
 
 func _update_ball():
 	Network.get_ball_info(peer_id, null)
@@ -78,6 +82,8 @@ func init_player(player_id):
 	if player_id == peer_id:
 		new_player.is_operating = true
 		new_player.z_index = 10
+		controlling = new_player
+	new_player.is_left = GameState.players[player_id].is_left
 
 	$Players.add_child(new_player)
 	visible_players.append(player_id)

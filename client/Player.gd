@@ -4,7 +4,7 @@ const OPERATING_COLOR = Color(0, 0.75, 1)
 var speed = 333
 var player_size = null
 var player_boundaries = null
-var is_left = true
+var is_left = null
 var is_operating = false
 var new_position = Vector2.ZERO
 var operating_color_set = false
@@ -24,9 +24,7 @@ func _ready():
 		right_player = get_viewport().size.x
 	}
 
-	is_left = false
-
-	if !is_left:
+	if is_left != null and is_left == false:
 		position.x = player_boundaries.right_player - player_boundaries.size[0]
 	new_position = position
 

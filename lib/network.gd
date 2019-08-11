@@ -24,8 +24,7 @@ func _ready():
 			y = get_viewport().size.y / 2
 		},
 		ip = IP.get_local_addresses()[1],
-		ping = 'fs',
-		is_left = GameState.is_next_player_left
+		ping = 'fs'
 	}
 
 
@@ -73,7 +72,6 @@ func _on_player_disconnected(id):
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()
 	rpc_id(1, '_initiate_player_info', get_tree().get_network_unique_id(), self_data)
-	GameState.is_next_player_left = !GameState.is_next_player_left
 
 
 func _on_connection_failed():
@@ -116,7 +114,6 @@ remote func _get_player_boundaries_info(peer_id, info):
 func get_ball_info(peer_id, info):
 	rpc_unreliable_id(1, '_get_ball_info', peer_id, null)
 
-
 remote func _get_ball_info(peer_id, info):
 	if get_tree().is_network_server():
 		rpc_unreliable_id(peer_id, '_get_ball_info', peer_id, GameState.ball)
@@ -152,8 +149,19 @@ remote func _get_players_info(peer_id, info):
 
 
 remote func _initiate_player_info(id, info):
+	info.is_left = GameState.is_next_player_left
 	GameState.players[id] = info
 
 	if get_tree().is_network_server():
 		for peer_id in GameState.players.keys():
 			rpc_id(peer_id, '_initiate_player_info', peer_id, GameState.players[peer_id])
+		GameState.is_next_player_left = not GameState.is_next_player_left
+
+func get_side_info(peer_id, info):
+	rpc_unreliable_id(1, '_get_side_info', peer_id, null)
+
+remote func _get_side_info(peer_id, info):
+	if get_tree().is_network_server():
+		rpc_unreliable_id(peer_id, '_get_side_info', peer_id, GameState.players[peer_id].is_left)
+	else:
+		GameState.players[peer_id].is_left = info
