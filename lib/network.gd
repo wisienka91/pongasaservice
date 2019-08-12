@@ -60,8 +60,17 @@ func _on_player_connected(id):
 		pass
 
 func _on_player_disconnected(id):
-	print("Player ", id, " disconnected...")
-	GameState.players.erase(id)
+	if get_tree().is_network_server():
+		print("Player ", id, " disconnected...")
+		GameState.players.erase(id)
+		for peer_id in GameState.players.keys():
+			# TO-DO:
+			# send signal to all but disconnected
+			pass
+	else:
+		# TO-DO:
+		# receive disconnected player signal
+		pass
 
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()

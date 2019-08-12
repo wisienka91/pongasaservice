@@ -27,6 +27,7 @@ func get_players_to_remove():
 	var players_to_remove = []
 	for player_id in visible_players:
 		if not GameState.players.keys().has(player_id):
+			print('trying toooo')
 			players_to_remove.append(player_id)
 	return players_to_remove
 
@@ -71,8 +72,9 @@ func _display_players():
 		var players_to_add = get_players_to_add()
 		add_players(players_to_add)
 	elif len(GameState.players.keys()) < len(players):
-		var players_to_add = get_players_to_remove()
-		remove_players(players_to_add)
+		print("cos bym usunal")
+		var players_to_remove = get_players_to_remove()
+		remove_players(players_to_remove)
 	else:
 		pass
 
