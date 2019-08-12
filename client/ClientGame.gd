@@ -22,6 +22,21 @@ func add_players(players_to_add):
 	for player_id in players_to_add:
 		init_player(player_id)
 
+
+func get_players_to_remove():
+	var players_to_remove = []
+	for player_id in visible_players:
+		if not GameState.players.keys().has(player_id):
+			players_to_remove.append(player_id)
+	return players_to_remove
+
+func remove_players(players_to_remove):
+	for player_id in players_to_remove:
+		remove_player(player_id)
+
+func remove_player(player_id):
+	print('asd ', player_id)
+
 func _physics_process(delta):
 	Network.get_players_info(peer_id, null)
 	if !GameState.player_boundaries_set and controlling:
@@ -56,9 +71,8 @@ func _display_players():
 		var players_to_add = get_players_to_add()
 		add_players(players_to_add)
 	elif len(GameState.players.keys()) < len(players):
-		# TO-DO:
-		# - remove disconnected players
-		pass
+		var players_to_add = get_players_to_remove()
+		remove_players(players_to_add)
 	else:
 		pass
 

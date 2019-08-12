@@ -12,7 +12,7 @@ func _ready():
 
 	# warning-ignore:return_value_discarded
 	get_node("QuitButtonsContainer/QuitMarginContainer/QuitButton").connect(
-	    "pressed", self, "_on_quit_button_pressed")
+		"pressed", self, "_on_quit_button_pressed")
 
 
 func _on_server_button_pressed():
