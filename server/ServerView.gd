@@ -2,8 +2,7 @@ extends Node2D
 
 const PeerItem = preload("res://server/PeerItem.tscn")
 
-# 2 for tests. to be 3
-const MinPlayers = 2
+const MinPlayers = 3
 
 var listIndex = 0
 var playersVisible = []
