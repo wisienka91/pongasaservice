@@ -5,6 +5,7 @@ var ip = IP.get_local_addresses()[1]
 var port = "6007"
 var players = {}
 var self_data = {}
+var ping_timer = Timer.new()
 
 
 func _ready():
@@ -24,8 +25,16 @@ func _ready():
 			y = get_viewport().size.y / 2
 		},
 		ip = IP.get_local_addresses()[1],
-		ping = 'fs'
+		ping = 0,
+		ping_start = 0
 	}
+
+func _ping_timer_setup():
+	ping_timer.connect('timeout', self, 'ping_send')
+	ping_timer.set_wait_time(1)
+	ping_timer.set_one_shot(false)
+	add_child(ping_timer)
+	ping_timer.start()
 
 func start_server(port, max_players):
 	self_data.name = '1'
@@ -34,6 +43,8 @@ func start_server(port, max_players):
 	var error = peer.create_server(port, max_players)
 	print("Starting server... Port: ", port, ". Errors: ", error)
 	get_tree().set_network_peer(peer)
+	_ping_timer_setup()
+
 	return({
 		"name": str(get_tree().get_network_unique_id()),
 		"ip": ip,
@@ -56,8 +67,6 @@ func _on_server_disconnected():
 func _on_player_connected(id):
 	if get_tree().is_network_server():
 		print("Player: ", id, " connected...")
-	else:
-		pass
 
 func _on_player_disconnected(id):
 	print("Player ", id, " disconnected...")
@@ -161,3 +170,15 @@ remote func _get_side_info(peer_id, info):
 		rpc_unreliable_id(peer_id, '_get_side_info', peer_id, GameState.players[peer_id].is_left)
 	else:
 		GameState.players[peer_id].is_left = info
+
+func ping_send():
+	if get_tree().is_network_server():
+		for player_id in GameState.players.keys():
+			GameState.players[player_id].start_ping = OS.get_ticks_msec()
+			rpc_unreliable_id(player_id, 'ping_receive', player_id)
+
+remote func ping_receive(player_id):
+	rpc_unreliable_id(1, 'ping_response', player_id)
+
+remote func ping_response(player_id):
+	GameState.players[player_id].ping = OS.get_ticks_msec() - GameState.players[player_id].start_ping
