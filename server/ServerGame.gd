@@ -1,5 +1,11 @@
 extends Node
 
+
+const ball_zero_position = Vector2(512, 384)
+const ball_acceleration = 1.2
+const ball_zero_speed = Vector2(50, 15)
+
+
 func _update_ball(delta):
 	GameState.ball.ball_position += GameState.ball.ball_speed * delta
 	if GameState.player_boundaries_set and GameState.started:
@@ -11,10 +17,15 @@ func _wall_collision():
 		GameState.ball.ball_speed.y *= -1
 	elif GameState.ball.ball_position.y < GameState.ball_boundaries.y_up + GameState.ball_boundaries.radius:
 		GameState.ball.ball_speed.y *= -1
+
+	# TO-DO:
+	# randomize ball velocity
 	if GameState.ball.ball_position.x > GameState.ball_boundaries.x_right - GameState.ball_boundaries.radius:
-		print("Left side scored")
+		GameState.ball.ball_position = ball_zero_position
+		GameState.ball.ball_speed = ball_zero_speed
 	elif GameState.ball.ball_position.x < GameState.ball_boundaries.x_left + GameState.ball_boundaries.radius:
-		print("Right side scored")
+		GameState.ball.ball_position = ball_zero_position
+		GameState.ball.ball_speed = ball_zero_speed
 
 func _check_player(player, side):
 	var up_player = GameState.ball.ball_position.y > GameState.players[player].position.y - GameState.player_boundaries.size.y
@@ -28,7 +39,8 @@ func _check_player(player, side):
 		pass
 
 	if up_player and down_player and contact_player:
-		GameState.ball.ball_speed.x *= -1
+		GameState.ball.ball_speed.x *= -ball_acceleration
+		GameState.ball.ball_speed.y *= ball_acceleration
 
 func _check_left():
 	for player in GameState.players:
@@ -52,3 +64,6 @@ func _physics_process(delta):
 	if GameState.started:
 		if get_tree().is_network_server():
 			_update_ball(delta)
+	else:
+		if GameState.ball.ball_position != ball_zero_position:
+			GameState.ball.ball_position = ball_zero_position
