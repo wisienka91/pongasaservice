@@ -46,15 +46,13 @@ func _check_player(player, side):
 
 func _check_left():
 	for player in GameState.players:
-		# TO-DO:
-		# check just left players
-		_check_player(player, "left")
+		if GameState.players[player].is_left:
+			_check_player(player, "left")
 
 func _check_right():
 	for player in GameState.players:
-		# TO-DO:
-		# check just right players
-		_check_player(player, "right")
+		if !GameState.players[player].is_left:
+			_check_player(player, "right")
 
 func _player_collision():
 	if GameState.ball.ball_position.x < GameState.ball_boundaries.x_left + 15 * GameState.ball_boundaries.radius:

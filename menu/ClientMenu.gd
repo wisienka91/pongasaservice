@@ -18,11 +18,11 @@ func _ready():
 
 	# warning-ignore:return_value_discarded
 	get_node("ClientInputContainer/IPMarginContainer/IPInput").connect(
-	"text_changed", self, "_on_ip_input_changed")
+		"text_changed", self, "_on_ip_input_changed")
 
 	# warning-ignore:return_value_discarded
 	get_node("ClientInputContainer/PortMarginContainer/PortInput").connect(
-	"value_changed", self, "_on_port_input_changed")
+		"value_changed", self, "_on_port_input_changed")
 
 
 func _on_start_button_pressed():

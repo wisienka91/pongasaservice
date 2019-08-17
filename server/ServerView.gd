@@ -13,7 +13,7 @@ func addItem(node, child_data):
 	var item = PeerItem.instance()
 	item.get_node("IdLabel").text = str(child_data.name)
 	item.get_node("IPLabel").text = child_data.ip
-	item.get_node("PingLabel").text = child_data.ping
+	item.get_node("PingLabel").text = str(child_data.ping)
 	node.add_child(item)
 	if str(child_data.name) != "PeerId":
 		playersVisible.append(child_data.name)
@@ -54,10 +54,14 @@ func _remove_players():
 			$Panel/ScrollContainer/PeersList.remove_child(peer)
 			peer.queue_free()
 
-#func _update_ping():
-	# TO-DO:
-	# - update ping
-#	pass
+func _update_ping():
+	var peers = $Panel/ScrollContainer/PeersList.get_children()
+	for peer in peers:
+		var player_id = int(peer.get_node("IdLabel").text)
+		if player_id != "1":
+			# TO-DO:
+			# log ping so it can be used for statistics
+			peer.get_node("PingLabel").text = str(GameState.players[player_id].ping)
 
 func _physics_process(delta):
 	_add_players()
@@ -69,4 +73,4 @@ func _physics_process(delta):
 		GameState.started = false
 		# TO-DO:
 		# splash: waiting for minimum players number
-	#_update_ping()
+	_update_ping()
