@@ -58,10 +58,11 @@ func _update_ping():
 	var peers = $Panel/ScrollContainer/PeersList.get_children()
 	for peer in peers:
 		var player_id = int(peer.get_node("IdLabel").text)
-		if player_id != "1":
-			# TO-DO:
-			# log ping so it can be used for statistics
-			peer.get_node("PingLabel").text = str(GameState.players[player_id].ping)
+		if player_id != 1:
+			var player_ping = str(GameState.players[player_id].ping)
+			peer.get_node("PingLabel").text = player_ping
+			print('Player: ', player_id, ' - ping: ', player_ping)
+			# log path: user://logs -> ~/.local/share/godot/app_userdata/pongasaservice/logs
 
 func _physics_process(delta):
 	_add_players()

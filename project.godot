@@ -39,6 +39,11 @@ window/size/resizable=false
 
 fallback="pl_PL"
 
+[logging]
+
+file_logging/enable_file_logging=true
+file_logging/max_log_files=20
+
 [rendering]
 
 environment/default_clear_color=Color( 0, 0, 0, 1 )
