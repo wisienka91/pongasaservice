@@ -27,7 +27,6 @@ func _ready():
 		ping = 'fs'
 	}
 
-
 func start_server(port, max_players):
 	self_data.name = '1'
 	GameState.server[1] = self_data
@@ -41,7 +40,6 @@ func start_server(port, max_players):
 		"ping": "-"
 	})
 
-
 func connect_to_server(ip, port, player_name):
 	# warning-ignore:return_value_discarded
 	get_tree().connect("connected_to_server", self, "_on_connected_to_server")
@@ -50,12 +48,10 @@ func connect_to_server(ip, port, player_name):
 	print("Connecting to the server... IP: ", ip, ", port: ", port, ". Errors: ", error)
 	get_tree().set_network_peer(peer)
 
-
 func _on_server_disconnected():
 	print("Server ", ip, " disconnected...")
 	#get_tree().get_rpc_sender_id()
 	#peer.close_connection()
-
 
 func _on_player_connected(id):
 	if get_tree().is_network_server():
@@ -63,16 +59,13 @@ func _on_player_connected(id):
 	else:
 		pass
 
-
 func _on_player_disconnected(id):
 	print("Player ", id, " disconnected...")
 	GameState.players.erase(id)
 
-
 func _on_connected_to_server():
 	self_data.name = get_tree().get_network_unique_id()
 	rpc_id(1, '_initiate_player_info', get_tree().get_network_unique_id(), self_data)
-
 
 func _on_connection_failed():
 	pass
@@ -85,10 +78,8 @@ remote func _set_player_boundaries(peer_id, player_boundaries):
 		GameState.player_boundaries = player_boundaries
 		GameState.player_boundaries_set = true
 
-
 func set_player_info(peer_id, position):
 	rpc_unreliable_id(1, '_set_player_info', peer_id, position)
-
 
 remote func _set_player_info(peer_id, position):
 	if peer_id in GameState.players.keys():
@@ -100,10 +91,8 @@ remote func _set_player_info(peer_id, position):
 					position.y = GameState.player_boundaries.y_down
 				GameState.players[peer_id].position = position
 
-
 func get_player_boundaries_info(peer_id, info):
 	rpc_id(1, '_get_player_boundaries_info', peer_id, null)
-
 
 remote func _get_player_boundaries_info(peer_id, info):
 	if get_tree().is_network_server():
@@ -140,13 +129,11 @@ remote func _get_ball_boundaries_info(peer_id, info):
 func get_players_info(peer_id, info):
 	rpc_unreliable_id(1, '_get_players_info', peer_id, null)
 
-
 remote func _get_players_info(peer_id, info):
 	if get_tree().is_network_server():
 		rpc_unreliable_id(peer_id, '_get_players_info', peer_id, GameState.players)
 	else:
 		GameState.players = info
-
 
 remote func _initiate_player_info(id, info):
 	info.is_left = GameState.is_next_player_left

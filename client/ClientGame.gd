@@ -18,6 +18,25 @@ func get_players_to_add():
 			players_to_add.append(player_id)
 	return players_to_add
 
+func get_players_to_remove():
+	var players_to_remove = []
+	for player_id in visible_players:
+		if not GameState.players.keys().has(player_id):
+			players_to_remove.append(player_id)
+	return players_to_remove
+
+func remove_players(players_to_remove):
+	for player_id in players_to_remove:
+		remove_player(player_id)
+
+func remove_player(player_id):
+	var player_objects = $Players.get_children()
+	for player_object in player_objects:
+		if player_object.name == str(player_id):
+			$Players.remove_child(player_object)
+			player_object.queue_free()
+			visible_players.erase(player_id)
+
 func add_players(players_to_add):
 	for player_id in players_to_add:
 		init_player(player_id)
@@ -55,10 +74,9 @@ func _display_players():
 	if len(GameState.players.keys()) > len(visible_players):
 		var players_to_add = get_players_to_add()
 		add_players(players_to_add)
-	elif len(GameState.players.keys()) < len(players):
-		# TO-DO:
-		# - remove disconnected players
-		pass
+	elif len(GameState.players.keys()) < len(visible_players):
+		var players_to_remove = get_players_to_remove()
+		remove_players(players_to_remove)
 	else:
 		pass
 
