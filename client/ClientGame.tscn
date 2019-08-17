@@ -45,3 +45,34 @@ shape = SubResource( 3 )
 position = Vector2( 512, 384 )
 
 [node name="Players" type="Node" parent="."]
+
+[node name="LeftScoreContainer" type="VBoxContainer" parent="."]
+margin_right = 64.0
+margin_bottom = 14.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_scale = Vector2( 8, 8 )
+size_flags_vertical = 2
+alignment = 1
+
+[node name="ScoreLeft" type="Label" parent="LeftScoreContainer"]
+margin_right = 64.0
+margin_bottom = 14.0
+text = "0"
+align = 1
+
+[node name="RightScoreContainer" type="VBoxContainer" parent="."]
+margin_left = 512.0
+margin_right = 576.0
+margin_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 8, 8 )
+size_flags_vertical = 2
+alignment = 1
+
+[node name="ScoreRight" type="Label" parent="RightScoreContainer"]
+margin_right = 64.0
+margin_bottom = 14.0
+text = "0"
+align = 1

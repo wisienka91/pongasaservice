@@ -6,12 +6,12 @@ var _params = null
 
 
 func switch_scene(new_scene, params=null):
-    _params = params
+	_params = params
 	# warning-ignore:return_value_discarded
-    get_tree().change_scene(new_scene)
+	get_tree().change_scene(new_scene)
 
 
 func get_param(name):
-    if (_params != null and _params.has(name)):
-        return _params[name]
-    return null
+	if (_params != null and _params.has(name)):
+		return _params[name]
+	return null

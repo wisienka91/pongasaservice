@@ -14,7 +14,7 @@ func _ready():
 
 	# warning-ignore:return_value_discarded
 	get_node("ActionButtonsContainer/QuitMarginContainer/QuitButton").connect(
-	    "pressed", self, "_on_quit_button_pressed")
+		"pressed", self, "_on_quit_button_pressed")
 
 	# warning-ignore:return_value_discarded
 	get_node("ClientInputContainer/IPMarginContainer/IPInput").connect(
