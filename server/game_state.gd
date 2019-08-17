@@ -31,3 +31,8 @@ var ball_boundaries = {
 var ball_boundaries_set = false
 
 var is_next_player_left = true
+
+var score = {
+	left = 0,
+	right = 0
+}

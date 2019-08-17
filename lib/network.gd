@@ -109,6 +109,15 @@ remote func _get_ball_info(peer_id, info):
 	else:
 		GameState.ball = info
 
+func get_score_info(peer_id, info):
+	rpc_unreliable_id(1, '_get_score_info', peer_id, null)
+
+remote func _get_score_info(peer_id, info):
+	if get_tree().is_network_server():
+		rpc_unreliable_id(peer_id, '_get_score_info', peer_id, GameState.score)
+	else:
+		GameState.score = info
+
 func set_ball_boundaries(peer_id, ball_boundaries):
 	rpc_id(1, '_set_ball_boundaries', peer_id, ball_boundaries)
 
