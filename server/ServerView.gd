@@ -7,6 +7,7 @@ const MinPlayers = 3
 var listIndex = 0
 var playersVisible = []
 var server_data = null
+var max_points = 0
 
 func addItem(node, child_data):
 	var item = PeerItem.instance()
@@ -20,7 +21,7 @@ func addItem(node, child_data):
 func _ready():
 	var port = SceneSwitcher.get_param("port")
 	var max_players = SceneSwitcher.get_param("max_players")
-	var max_points = SceneSwitcher.get_param("max_points")
+	max_points = SceneSwitcher.get_param("max_points")
 
 	server_data = Network.start_server(port, max_players + 1)
 	var key_data = {
@@ -30,6 +31,8 @@ func _ready():
 	}
 	addItem($Panel/PeersKey, key_data)
 	addItem($Panel/ScrollContainer/PeersList, GameState.server[1])
+
+	Network.connect("ping_updated", self, "_update_ping")
 
 func _add_players():
 	for key in GameState.players.keys():
@@ -63,14 +66,20 @@ func _update_ping():
 			print('Player: ', player_id, ' - ping: ', player_ping)
 			# log path: user://logs -> ~/.local/share/godot/app_userdata/pongasaservice/logs
 
+
+func max_points_reached():
+	if GameState.score.left == max_points or GameState.score.right == max_points:
+		return true
+	return false
+
 func _physics_process(delta):
 	_add_players()
 	_remove_players()
 
-	if len(playersVisible) >= MinPlayers:
+	var max_reached = max_points_reached()
+	if len(playersVisible) >= MinPlayers and !max_reached:
 		GameState.started = true
 	else:
 		GameState.started = false
 		# TO-DO:
 		# splash: waiting for minimum players number
-	_update_ping()

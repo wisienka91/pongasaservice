@@ -7,6 +7,7 @@ var players = {}
 var self_data = {}
 var ping_timer = Timer.new()
 
+signal ping_updated
 
 func _ready():
 	# warning-ignore:return_value_discarded
@@ -163,11 +164,11 @@ remote func _initiate_player_info(id, info):
 		GameState.is_next_player_left = not GameState.is_next_player_left
 
 func get_side_info(peer_id, info):
-	rpc_unreliable_id(1, '_get_side_info', peer_id, null)
+	rpc_id(1, '_get_side_info', peer_id, null)
 
 remote func _get_side_info(peer_id, info):
 	if get_tree().is_network_server():
-		rpc_unreliable_id(peer_id, '_get_side_info', peer_id, GameState.players[peer_id].is_left)
+		rpc_id(peer_id, '_get_side_info', peer_id, GameState.players[peer_id].is_left)
 	else:
 		GameState.players[peer_id].is_left = info
 
@@ -182,3 +183,4 @@ remote func ping_receive(player_id):
 
 remote func ping_response(player_id):
 	GameState.players[player_id].ping = OS.get_ticks_msec() - GameState.players[player_id].start_ping
+	emit_signal("ping_updated")
