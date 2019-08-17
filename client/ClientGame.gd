@@ -41,6 +41,11 @@ func add_players(players_to_add):
 	for player_id in players_to_add:
 		init_player(player_id)
 
+func _update_score():
+	Network.get_score_info(peer_id, null)
+	$LeftScoreContainer/ScoreLeft.text = str(GameState.score.left)
+	$RightScoreContainer/ScoreRight.text = str(GameState.score.right)
+
 func _physics_process(delta):
 	Network.get_players_info(peer_id, null)
 	if !GameState.player_boundaries_set and controlling:
@@ -51,6 +56,7 @@ func _physics_process(delta):
 	_display_players()
 	_update_players()
 	_update_ball()
+	_update_score()
 
 func _set_player_boundaries():
 	Network.set_player_boundaries(peer_id, controlling.player_boundaries)

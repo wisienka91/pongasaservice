@@ -58,7 +58,6 @@ alignment = 1
 [node name="ScoreLeft" type="Label" parent="LeftScoreContainer"]
 margin_right = 64.0
 margin_bottom = 14.0
-text = "0"
 align = 1
 
 [node name="RightScoreContainer" type="VBoxContainer" parent="."]
@@ -74,5 +73,4 @@ alignment = 1
 [node name="ScoreRight" type="Label" parent="RightScoreContainer"]
 margin_right = 64.0
 margin_bottom = 14.0
-text = "0"
 align = 1

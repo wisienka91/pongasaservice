@@ -23,9 +23,11 @@ func _wall_collision():
 	if GameState.ball.ball_position.x > GameState.ball_boundaries.x_right - GameState.ball_boundaries.radius:
 		GameState.ball.ball_position = ball_zero_position
 		GameState.ball.ball_speed = ball_zero_speed
+		GameState.score.left += 1
 	elif GameState.ball.ball_position.x < GameState.ball_boundaries.x_left + GameState.ball_boundaries.radius:
 		GameState.ball.ball_position = ball_zero_position
 		GameState.ball.ball_speed = ball_zero_speed
+		GameState.score.right += 1
 
 func _check_player(player, side):
 	var up_player = GameState.ball.ball_position.y > GameState.players[player].position.y - GameState.player_boundaries.size.y
