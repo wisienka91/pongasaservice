@@ -87,6 +87,7 @@ func _display_players():
 		pass
 
 func _update_players():
+	Network.get_side_info(peer_id, null)
 	if controlling:
 		if controlling.position != controlling.new_position:
 			Network.set_player_info(peer_id, controlling.new_position)

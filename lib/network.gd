@@ -40,6 +40,7 @@ func _ping_timer_setup():
 func start_server(port, max_players):
 	self_data.name = '1'
 	GameState.server[1] = self_data
+	GameState.is_next_player_left = true
 	var peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, max_players)
 	print("Starting server... Port: ", port, ". Errors: ", error)
@@ -71,6 +72,7 @@ func _on_player_connected(id):
 
 func _on_player_disconnected(id):
 	print("Player ", id, " disconnected...")
+	GameState.is_next_player_left = GameState.players[id].is_left
 	GameState.players.erase(id)
 
 func _on_connected_to_server():

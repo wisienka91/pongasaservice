@@ -30,7 +30,7 @@ var ball_boundaries = {
 
 var ball_boundaries_set = false
 
-var is_next_player_left = true
+var is_next_player_left = null
 
 var score = {
 	left = 0,
