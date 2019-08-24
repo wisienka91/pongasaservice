@@ -161,8 +161,6 @@ remote func _initiate_player_info(id, info):
 	GameState.players[id] = info
 
 	if get_tree().is_network_server():
-		for peer_id in GameState.players.keys():
-			rpc_id(peer_id, '_initiate_player_info', peer_id, GameState.players[peer_id])
 		GameState.is_next_player_left = not GameState.is_next_player_left
 
 func get_side_info(peer_id, info):
