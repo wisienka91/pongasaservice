@@ -68,10 +68,10 @@ func _on_server_disconnected():
 
 func _on_player_connected(id):
 	if get_tree().is_network_server():
-		print("Player: ", id, " connected...")
+		print("PCONN - Player - ", id, " - connected...")
 
 func _on_player_disconnected(id):
-	print("Player ", id, " disconnected...")
+	print("PDCONN - Player - ", id, " - disconnected...")
 	GameState.is_next_player_left = GameState.players[id].is_left
 	GameState.players.erase(id)
 

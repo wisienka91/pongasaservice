@@ -63,7 +63,7 @@ func _update_ping():
 		if player_id != 1:
 			var player_ping = str(GameState.players[player_id].ping)
 			peer.get_node("PingLabel").text = player_ping
-			print('Player: ', player_id, ' - ping: ', player_ping)
+			print('STAT - Player: ', player_id, ' : ping: ', player_ping)
 			# log path: user://logs -> ~/.local/share/godot/app_userdata/pongasaservice/logs
 
 
