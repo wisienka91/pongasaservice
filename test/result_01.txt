@@ -1,0 +1,39 @@
+No file path. Using default...
+Default path: /home/m/.local/share/godot/app_userdata/pongasaservice/logs/log.txt
+File found. Analyzing...
+
+Statistics:
+{
+    "1528414899": {
+        "active": false,
+        "max": 42,
+        "mean": 18.53512536706573,
+        "mean_count": 4427,
+        "mean_sum": 82055,
+        "min": 7
+    },
+    "1927172421": {
+        "active": false,
+        "max": 23,
+        "mean": 11.01955434288313,
+        "mean_count": 4398,
+        "mean_sum": 48464,
+        "min": 5
+    },
+    "406272565": {
+        "active": false,
+        "max": 60,
+        "mean": 20.335829362378036,
+        "mean_count": 4407,
+        "mean_sum": 89620,
+        "min": 7
+    },
+    "756574971": {
+        "active": false,
+        "max": 103,
+        "mean": 19.525500910746814,
+        "mean_count": 4392,
+        "mean_sum": 85756,
+        "min": 7
+    }
+}

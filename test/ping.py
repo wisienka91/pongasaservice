@@ -92,5 +92,5 @@ if __name__ == '__main__':
     else:
         print('File found. Analyzing...')
         get_log_statistics(filepath)
-        print('\nStatistics: \n{}'.format(json.dumps(STATISTICS, indent=4, sort_keys=True)))
+        print('\nStatistics:\n{}'.format(json.dumps(STATISTICS, indent=4, sort_keys=True)))
 
