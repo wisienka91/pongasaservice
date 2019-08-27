@@ -1,0 +1,21 @@
+File found. Analyzing...
+
+Statistics:
+{
+    "1827732610": {
+        "active": false,
+        "max": 350,
+        "mean": 24.977067407922167,
+        "mean_count": 1439,
+        "mean_sum": 35942,
+        "min": 14
+    },
+    "212089755": {
+        "active": false,
+        "max": 238,
+        "mean": 17.798471160528145,
+        "mean_count": 1439,
+        "mean_sum": 25612,
+        "min": 12
+    }
+}

@@ -1,0 +1,37 @@
+File found. Analyzing...
+
+Statistics:
+{
+    "1969512475": {
+        "active": false,
+        "max": 36,
+        "mean": 23.938409475465313,
+        "mean_count": 2955,
+        "mean_sum": 70738,
+        "min": 9
+    },
+    "57691442": {
+        "active": false,
+        "max": 115,
+        "mean": 17.242852337706022,
+        "mean_count": 2973,
+        "mean_sum": 51263,
+        "min": 11
+    },
+    "698467646": {
+        "active": false,
+        "max": 101,
+        "mean": 22.958627648839556,
+        "mean_count": 2973,
+        "mean_sum": 68256,
+        "min": 12
+    },
+    "833735917": {
+        "active": false,
+        "max": 101,
+        "mean": 25.453542185831257,
+        "mean_count": 2809,
+        "mean_sum": 71499,
+        "min": 13
+    }
+}
