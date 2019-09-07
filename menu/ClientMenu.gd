@@ -1,6 +1,6 @@
 extends Node2D
 
-var ip = ""
+var ip = "127.0.0.1"
 var port = 6007
 
 func _ready():
@@ -36,14 +36,14 @@ func _on_back_button_pressed():
 
 
 func _on_ip_input_changed(new_ip):
-	ip = new_ip
+	ip = new_ip.replace(',', '.')
 
 
 func _on_port_input_changed(new_port):
 	if int(new_port) > 0:
 		port = int(new_port)
 	else:
-		port = null
+		port = 6007
 
 
 func _on_quit_button_pressed():
