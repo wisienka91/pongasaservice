@@ -1,8 +1,8 @@
 extends Node2D
 
-var port = null
-var max_players = 0
-var max_points = 0
+var port = 6007
+var max_players = 2
+var max_points = 3
 
 
 func _ready():

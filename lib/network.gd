@@ -43,7 +43,7 @@ func start_server(port, max_players):
 	GameState.is_next_player_left = true
 	var peer = NetworkedMultiplayerENet.new()
 	var error = peer.create_server(port, max_players)
-	print("Starting server... Port: ", port, ". Errors: ", error)
+	print(OS.get_time(), " Starting server... Port: ", port, ". Errors: ", error)
 	get_tree().set_network_peer(peer)
 	_ping_timer_setup()
 
@@ -62,16 +62,16 @@ func connect_to_server(ip, port, player_name):
 	get_tree().set_network_peer(peer)
 
 func _on_server_disconnected():
-	print("Server ", ip, " disconnected...")
+	print(OS.get_time(), " Server ", ip, " disconnected...")
 	#get_tree().get_rpc_sender_id()
 	#peer.close_connection()
 
 func _on_player_connected(id):
 	if get_tree().is_network_server():
-		print("PCONN - Player - ", id, " - connected...")
+		print(OS.get_time(), " PCONN - Player - ", id, " - connected...")
 
 func _on_player_disconnected(id):
-	print("PDCONN - Player - ", id, " - disconnected...")
+	print(OS.get_time(), " PDCONN - Player - ", id, " - disconnected...")
 	GameState.is_next_player_left = GameState.players[id].is_left
 	GameState.players.erase(id)
 

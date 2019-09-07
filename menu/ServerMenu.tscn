@@ -35,6 +35,7 @@ margin_bottom = 40.0
 [node name="PortInput" type="LineEdit" parent="ServerInputContainer/PortMarginContainer"]
 margin_right = 58.0
 margin_bottom = 40.0
+text = "6007"
 
 [node name="PlayersMarginContainer" type="MarginContainer" parent="ServerInputContainer"]
 margin_left = 227.0
@@ -44,6 +45,7 @@ margin_bottom = 40.0
 [node name="PlayersInput" type="LineEdit" parent="ServerInputContainer/PlayersMarginContainer"]
 margin_right = 58.0
 margin_bottom = 40.0
+text = "2"
 
 [node name="PointsMarginContainer" type="MarginContainer" parent="ServerInputContainer"]
 margin_left = 386.0
@@ -53,6 +55,7 @@ margin_bottom = 40.0
 [node name="PointsInput" type="LineEdit" parent="ServerInputContainer/PointsMarginContainer"]
 margin_right = 58.0
 margin_bottom = 40.0
+text = "3"
 
 [node name="ServerInputLabelsContainer" type="HBoxContainer" parent="."]
 editor/display_folded = true
